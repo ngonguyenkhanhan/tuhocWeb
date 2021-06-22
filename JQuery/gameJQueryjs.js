@@ -14,14 +14,21 @@
 // })
 var colorPlayer1 = 'rgb(255,0,0)'
 var colorPlayer2 = 'rgb(0,0,255)'
+var doiLuot = 1
 $('button').click(function(){
+    if(doiLuot ===1){   // nếu là 1 thì màu của người chơi 1 và ngược lại
+        colorChange = colorPlayer1
+    }else{
+        colorChange = colorPlayer2
+    }
     var dong = $(this).closest('tr').index() //vị trí dòng
     var cot = $(this).closest('td').index() //vi tri cot
     
     for(row = 5; row > -1; row--){
         var colorCurrent = returnColor(row, cot)
         if (colorCurrent === 'rgb(128, 128, 128)') {    //neu mau hien tai la mau xam
-            changeColor(row, cot, colorPlayer1) //thay doi mau
+            changeColor(row, cot, colorChange) //thay doi mau
+            doiLuot = doiLuot *(-1) //để thay đổi lượt chơi: 1 là người chơi 1, (-1)là người chơi 2
             beark
         }
     }
@@ -34,5 +41,7 @@ function returnColor(dong, cot){
 function changeColor(dong, cot, color){
     return tableRow.eq(dong).find('td').eq(cot).find('button').css('background-color',color)
 }
-// console.log(returnColor(5,0))
+
+
+
 
