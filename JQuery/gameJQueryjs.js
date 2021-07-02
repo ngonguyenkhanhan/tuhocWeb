@@ -37,11 +37,15 @@ $('button').click(function(){
     }
     var kiemTraHang = checkHorizontal()
     var kiemTraCot = checkVertical()
+    var kiemTraDuongCheo = checkDiagonal()
     if(kiemTraHang ===true){
         console.log("chien thang HANG")
     }
-    if(kiemTraCot === true){
+    else if(kiemTraCot === true){
         console.log("chien thang COT")
+    }
+    else if (kiemTraDuongCheo === true){
+        console.log("chien thang DUONG CHEO")
     }
 })
 
@@ -85,6 +89,23 @@ function checkVertical(){
                 console.log("Vertical at Col"+ col)
                 return true
             }else {
+                continue
+            }
+        }
+    }
+}
+
+function checkDiagonal(){
+    for (var row = 0; row <6; row ++){
+        for(var col = 0; col<7; col ++){
+            if(check4Color(returnColor(row, col), returnColor(row + 1, col + 1),returnColor(row + 2, col + 2),returnColor(row + 3, col + 3))){
+                console.log("win Diagonal thuan")
+                return true
+            }
+            else if (check4Color(returnColor(row, col), returnColor(row + 1, col - 1),returnColor(row + 2, col - 2),returnColor(row + 3, col - 3))){
+                console.log("win Diagonal Nghich")
+                return true
+            }else{
                 continue
             }
         }
