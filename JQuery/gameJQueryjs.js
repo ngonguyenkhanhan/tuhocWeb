@@ -12,42 +12,58 @@
 //     posBtnClick[0] = row
 //     posBtnClick[1] = col
 // })
-var colorPlayer1 = 'rgb(255,0,0)'
-var colorPlayer2 = 'rgb(0,0,255)'
-var doiLuot = 1
+var player1Color = 'rgb(255,0,0)'
+var player1Name = prompt("Nhập tên người chơi 1, màu ĐỎ")
+
+
+
+var player2Color = 'rgb(0,0,255)'
+var player2Name = prompt("Nhập tên người chơi 2, màu XANH")
+
+var currentName = player1Name
+var colorChange = player1Color
+var currentPlayer = 1
+
+
+$('p').text(currentName + " bắt đầu chơi.")
+
+
 $('button').click(function(){
-    if(doiLuot ===1){   // nếu là 1 thì màu của người chơi 1 và ngược lại
-        colorChange = colorPlayer1
-    }else{
-        colorChange = colorPlayer2
-    }
-    var dong = $(this).closest('tr').index() //vị trí dòng
+    // var dong = $(this).closest('tr').index() //vị trí dòng
     var cot = $(this).closest('td').index() //vi tri cot
-    var r = dong
-    var c = cot
     for(row = 5; row > -1; row--){
         var colorCurrent = returnColor(row, cot)
         if (colorCurrent === 'rgb(128, 128, 128)') {    //neu mau hien tai la mau xam
             changeColor(row, cot, colorChange) //thay doi mau
-            doiLuot = doiLuot *(-1) //để thay đổi lượt chơi: 1 là người chơi 1, (-1)là người chơi 2
-            r = row
-            c = cot
             break
         }
     }
-    var kiemTraHang = checkHorizontal()
-    var kiemTraCot = checkVertical()
-    var kiemTraDuongCheo = checkDiagonal()
-    if(kiemTraHang ===true){
-        console.log("chien thang HANG")
+
+    if(checkHorizontal() || checkVertical() || checkDiagonal()){
+        $('h1').text(currentName + " Chiến Thắng")
+        $('h4').fadeOut('fast')
+        $('p').fadeOut('fast')
+        reportWin()
     }
-    else if(kiemTraCot === true){
-        console.log("chien thang COT")
-    }
-    else if (kiemTraDuongCheo === true){
-        console.log("chien thang DUONG CHEO")
+
+    currentPlayer = currentPlayer *(-1) //để thay đổi lượt chơi: 1 là người chơi 1, (-1)là người chơi 2
+
+    if(currentPlayer === 1){   // nếu là 1 thì màu của người chơi 1, tức màu đỏ và ngược lại
+        currentName = player1Name
+        $('p').text(" Tới lượt " + currentName)
+        colorChange = player1Color
+    }else{
+        currentName = player2Name
+        $('p').text(" Tới lượt " + currentName)
+        colorChange = player2Color
     }
 })
+
+
+
+function reportWin(){
+    alert(currentName + " chiến thắng")
+}
 
 var tableRow = $('table tr') 
 function returnColor(dong, cot){
@@ -56,15 +72,6 @@ function returnColor(dong, cot){
 function changeColor(dong, cot, color){
     return tableRow.eq(dong).find('td').eq(cot).find('button').css('background-color',color)
 }
-
-// function checkHori(dong, cot){
-//     if(returnColor(dong, cot)!=='rgb(128,128,128)'){
-//         if((returnColor(dong, cot) === returnColor(dong, cot+1))&&(returnColor(dong, cot)=== returnColor(dong, cot+2))&&((returnColor(dong, cot)=== returnColor(dong, cot+3))||(returnColor(dong, cot)===returnColor(dong, cot-1)))){
-//             console.log("win")
-//         }
-//     }
-    
-// }
 
 
 function check4Color(one, two, three, four){
